@@ -36,8 +36,8 @@ function NavBar ({onLogin, onRegister}) {
         )}
 
         {showProfile && (
-           // <ProfileModal onClose={() => setShowProfile(false)}/>
-           <div>Profile coming soon</div>
+           <ProfileModal onClose={() => setShowProfile(false)}/>
+           //<div>Profile coming soon</div>
         )}
         </nav>
         </>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../services/api";
 
 function RegisterModal({ onClose }) {
+    
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");

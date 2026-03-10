@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import api from "../services/api";
 import { AuthContext } from "../context/AuthContext";
 
 
-function LoginModal ({onClose}) {
+function LoginModal ({ onClose }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -15,20 +15,15 @@ function LoginModal ({onClose}) {
         params: { email, password }
         });
 
-        localStorage.setItem("token", response.data.access_token);
-        window.location.reload();const token = response.data.access_token;
-
+        const token = response.data.access_token;
         localStorage.setItem("token", token);
 
-            
-
         const userRes = await api.get("/user/me", {
-
             headers: { Authorization: `Bearer ${token}` }
-            });
+        });
 
-            setUser(userRes.data);
-            onClose();
+        setUser(userRes.data);
+        onClose();
                 
     } catch (error) {
         alert("Invalid credentials");

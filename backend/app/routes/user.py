@@ -16,17 +16,25 @@ def get_profile(current_user: User = Depends(get_current_user)):
 
 @router.put("/update-profile")
 
-    
+@router.put("/update-profile")
 def update_profile(
-    data: UpdateProfile,
+    name: str = None,
+    field: str = None,
+    skills: str = None,
+    preferred_location: str = None,
+    notification_frequency: str = None,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user=Depends(get_current_user),
 ):
-    current_user.name = data.name
+    if name: current_user.name = name
+    if field: current_user.field = field
+    if skills: current_user.skills = skills
+    if preferred_location: current_user.preferred_location = preferred_location
+    if notification_frequency: current_user.notification_frequency = notification_frequency
     db.commit()
     db.refresh(current_user)
+    return {"message": "Profile updated"}    
 
-    return {"message": "Profile updated"}
 
 @router.put("/update-notification")
 def update_notification(

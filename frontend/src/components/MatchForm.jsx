@@ -1,55 +1,35 @@
 import { useState } from "react";
 
-function MatchForm() {
-  const [education, setEducation] = useState("");
-  const [skills, setSkills] = useState("");
-  const [level, setLevel] = useState("");
-  const [results, setResults] = useState([]);
+export default function MatchForm({ onSearch, loading }) {
+  const [form, setForm] = useState({ query: "", location: "" });
 
-  const handleSubmit = async () => {
-    // Later connect to FastAPI
-    const Results = [
-      { id: 1, title: "Software Developer Intern", company: "TechCorp" },
-      { id: 2, title: "Backend Intern", company: "Innovate Ltd" }
-    ];
-    setResults(Results);
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.query.trim()) return;
+    onSearch(form);
   };
 
   return (
-    <div style={{ padding: "30px" }}>
-      <h2>Find Internships</h2>
-
-      <select onChange={(e) => setEducation(e.target.value)}>
-        <option>Select Education Level</option>
-        <option>Diploma</option>
-        <option>Bachelor</option>
-        <option>Masters</option>
-      </select>
-
-      <input 
-        placeholder="Skills (e.g React, Python)"
-        onChange={(e) => setSkills(e.target.value)}
+    <form onSubmit={handleSubmit} className="match-form">
+      <input
+        name="query"
+        placeholder="Field of study or job title (e.g. Software Engineering)"
+        value={form.query}
+        onChange={handleChange}
+        required
       />
-
-      <select onChange={(e) => setLevel(e.target.value)}>
-        <option>Select Expertise</option>
-        <option>Beginner</option>
-        <option>Intermediate</option>
-        <option>Advanced</option>
-      </select>
-
-      <button onClick={handleSubmit}>Match</button>
-
-      <div style={{ marginTop: "20px" }}>
-        {results.map((item) => (
-          <div key={item.id}>
-            <h4>{item.title}</h4>
-            <p>{item.company}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+      <input
+        name="location"
+        placeholder="Preferred location (e.g. Nairobi, Kenya)"
+        value={form.location}
+        onChange={handleChange}
+      />
+      <button type="submit" disabled={loading}>
+        {loading ? "Searching..." : "Find Internships"}
+      </button>
+    </form>
   );
 }
-
-export default MatchForm;
